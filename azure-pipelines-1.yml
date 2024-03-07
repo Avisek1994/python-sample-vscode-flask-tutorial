@@ -25,6 +25,6 @@ steps:
       connectedServiceNameARM: 'AzureDevops(e626dd6a-11bf-4570-9951-10318b4fe7a5)'
       appType: 'functionAppLinux'
       appName: 'newfunapp009'
-      package: '$(System.ArtifactsDirectory)/**'
+      package: '$(System.ArtifactsDirectory)/26.zip'
       runtimeStack: 'PYTHON|3.10'
       deploymentMethod: 'auto'
