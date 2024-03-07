@@ -1,0 +1,37 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+
+
+pool:
+  vmImage: ubuntu-latest
+
+jobs:
+- deployment: DeploymentJob
+pool:
+  vmImage: ubuntu-latest
+environment: Prod
+strategy:
+  runOnce:
+    deploy:
+      steps:
+
+      - task: UsePythonVersion@0
+        inputs:
+          versionSpec: '$(pythonVersion)'
+        displayName: 'Use Python version'
+
+      - task: AzureWebApp@1
+        displayName: 'Deploy Azure Web App : {{ webAppName }}'
+        inputs:
+          azureSubscription: $(azureServiceConnectionId)
+          appName: $(webAppName)
+          package: $(Pipeline.Workspace)/drop/$(Build.BuildId).zip
+          deploymentMethod: zipDeploy
+
+          # The following parameter is specific to the Flask example code. You may
+          # or may not need a startup command for your app.
+
+          startUpCommand: 'gunicorn --bind=0.0.0.0 --workers=4 startup:app'
