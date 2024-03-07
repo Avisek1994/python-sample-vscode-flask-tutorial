@@ -5,8 +5,6 @@
 
 
 
-pool:
-  vmImage: ubuntu-latest
 
 jobs:
 - deployment: DeploymentJob
@@ -23,15 +21,11 @@ strategy:
           versionSpec: '$(pythonVersion)'
         displayName: 'Use Python version'
 
-      - task: AzureWebApp@1
-        displayName: 'Deploy Azure Web App : {{ webAppName }}'
+      - task: AzureFunctionApp@2
         inputs:
-          azureSubscription: $(azureServiceConnectionId)
-          appName: $(webAppName)
-          package: $(Pipeline.Workspace)/drop/$(Build.BuildId).zip
-          deploymentMethod: zipDeploy
-
-          # The following parameter is specific to the Flask example code. You may
-          # or may not need a startup command for your app.
-
-          startUpCommand: 'gunicorn --bind=0.0.0.0 --workers=4 startup:app'
+          connectedServiceNameARM: 'AzureDevops(e626dd6a-11bf-4570-9951-10318b4fe7a5)'
+          appType: 'functionAppLinux'
+          appName: 'newfunapp009'
+          package: '$(Pipeline.Workspace)/drop/$(Build.BuildId).zip'
+          runtimeStack: 'PYTHON|3.10'
+          deploymentMethod: 'auto'
