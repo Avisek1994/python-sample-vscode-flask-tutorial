@@ -6,26 +6,21 @@
 
 
 
-jobs:
-- deployment: DeploymentJob
 pool:
   vmImage: ubuntu-latest
-environment: Prod
-strategy:
-  runOnce:
-    deploy:
-      steps:
 
-      - task: UsePythonVersion@0
-        inputs:
-          versionSpec: '$(pythonVersion)'
-        displayName: 'Use Python version'
+steps:
 
-      - task: AzureFunctionApp@2
-        inputs:
-          connectedServiceNameARM: 'AzureDevops(e626dd6a-11bf-4570-9951-10318b4fe7a5)'
-          appType: 'functionAppLinux'
-          appName: 'newfunapp009'
-          package: '$(Pipeline.Workspace)/drop/$(Build.BuildId).zip'
-          runtimeStack: 'PYTHON|3.10'
-          deploymentMethod: 'auto'
+  - task: UsePythonVersion@0
+    inputs:
+      versionSpec: '$(pythonVersion)'
+    displayName: 'Use Python version'
+
+  - task: AzureFunctionApp@2
+    inputs:
+      connectedServiceNameARM: 'AzureDevops(e626dd6a-11bf-4570-9951-10318b4fe7a5)'
+      appType: 'functionAppLinux'
+      appName: 'newfunapp009'
+      package: '$(Pipeline.Workspace)/drop/$(Build.BuildId).zip'
+      runtimeStack: 'PYTHON|3.10'
+      deploymentMethod: 'auto'
